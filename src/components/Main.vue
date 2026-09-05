@@ -184,16 +184,20 @@ async function submitForm() {
 
   if (editingBook.value) {
     const index = books.value.findIndex((b) => b.id === editingBook.value!.id)
+    
     if (index !== -1) {
       const updated: Book = { ...editingBook.value, title, genre, publicationYear }
+      
       if (form.value.coverImage) {
         updated.coverImage = form.value.coverImage
+      
       } else {
         delete updated.coverImage
+      
       }
       
-      const updateBook = await update(updated);
-      books.value.reduce(updateBook);
+      const updatedBook = await update(updated);
+      books.value = books.value.map((book) => book.id === updatedBook.id ? updatedBook : book);
     }
 
   } else {
